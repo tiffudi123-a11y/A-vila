@@ -1,26 +1,27 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
-    public float restartDelay = 2f;
+    public Slider healthBar;
 
     int health;
-    bool dead;
 
-    void Awake() => health = maxHealth;
+    void Start()
+    {
+        health = maxHealth;
+        healthBar.maxValue = maxHealth; 
+        healthBar.value = health;
+    }
 
     public void TakeDamage(int amount)
     {
-        if (dead) return;
+        health -= amount;
+        healthBar.value = health;
 
-        health = Mathf.Max(0, health - amount);
-        if (health == 0)
-        {
-            dead = true;
-            Invoke(nameof(Restart), restartDelay);
-        }
+        if (health <= 0)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    void Restart() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 }

@@ -4,35 +4,29 @@ public class EnemySpawner : MonoBehaviour
 {
     public Enemy enemyPrefab;
     public Transform player;
-    public int maxEnemies = 10;
-    public float spawnInterval = 1f;
-    public float extraDistance = 2f;
+    public int maxEnemies = 15;
+    public int minporvz = 2;
+    public int maxporvz = 4;
+    public float intervspawn = 2f;
+    public float dminspawn = 12f;
+    public float maxdspawn = 16f;
 
-    Camera cam;
-    float nextSpawnTime;
-
-    void Start() => cam = Camera.main;
+    float timer;
 
     void Update()
     {
-        if (player == null || enemyPrefab == null) return;
+        timer -= Time.deltaTime;
+        if (timer > 0f) return;
+        timer = intervspawn;
 
         
-        if (Enemy.Alive < maxEnemies && Time.time >= nextSpawnTime)
+        int count = Mathf.Min(Random.Range(minporvz, maxporvz + 1), maxEnemies - transform.childCount);
+
+        for (int i = 0; i < count; i++)
         {
-            Spawn();
-            nextSpawnTime = Time.time + spawnInterval;
+            Vector2 offset = Random.insideUnitCircle.normalized * Random.Range(dminspawn, maxdspawn);
+            Enemy e = Instantiate(enemyPrefab, (Vector2)player.position + offset, Quaternion.identity, transform);
+            e.GetComponent<EnemyMovement>().target = player;
         }
-    }
-
-    void Spawn()
-    {
-        float halfH = cam.orthographicSize;
-        float halfW = halfH * cam.aspect;
-        float radius = Mathf.Sqrt(halfW * halfW + halfH * halfH) + extraDistance;
-
-        Vector2 pos = (Vector2)player.position + Random.insideUnitCircle.normalized * radius;
-        Enemy e = Instantiate(enemyPrefab, pos, Quaternion.identity);
-        e.SetTarget(player);
     }
 }

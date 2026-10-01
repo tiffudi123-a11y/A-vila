@@ -1,44 +1,12 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class Enemy : MonoBehaviour
 {
-    public int maxHealth = 100;
-    public float moveSpeed = 2.5f;
-    public int contactDamage = 10;
-    public float damageCooldown = 0.5f; 
+    public int health = 100;
+    public int dancontato = 10;
+    public float ColdownPHit = 0.5f;
 
-    
-    public static int Alive { get; private set; }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() => Alive = 0;
-
-    int health;
-    float nextHitTime;
-    Rigidbody2D rb;
-    Transform target;
-
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        rb.bodyType = RigidbodyType2D.Kinematic;
-        rb.gravityScale = 0f;
-        GetComponent<Collider2D>().isTrigger = true;
-        health = maxHealth;
-    }
-
-    void OnEnable()  => Alive++;
-    void OnDisable() => Alive--;
-
-    public void SetTarget(Transform t) => target = t;
-
-    void FixedUpdate()
-    {
-        if (target == null) return;
-        Vector2 dir = ((Vector2)target.position - rb.position).normalized;
-        rb.MovePosition(rb.position + dir * moveSpeed * Time.fixedDeltaTime);
-    }
+    float tempproxhit; 
 
     public void TakeDamage(int amount)
     {
@@ -48,12 +16,10 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (Time.time < nextHitTime) return;
+        if (Time.time < tempproxhit) return;
+        if (!other.TryGetComponent(out PlayerHealth player)) return;
 
-        PlayerHealth player = other.GetComponent<PlayerHealth>();
-        if (player == null) return;
-
-        player.TakeDamage(contactDamage);
-        nextHitTime = Time.time + damageCooldown;
+        player.TakeDamage(dancontato);
+        tempproxhit = Time.time + ColdownPHit; 
     }
 }

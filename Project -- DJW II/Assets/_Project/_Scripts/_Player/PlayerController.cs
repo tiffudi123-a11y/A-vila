@@ -1,84 +1,38 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movimento")]
     public float moveSpeed = 5f;
-    public float stopDistance = 0.1f;
+    public GameObject projectilePrefab;
+    public float tsegundo = 3f;
+    public float dtplayer = 0.6f;
 
-    [Header("Tiro")]
-    public Projectile projectilePrefab;
-    public float fireRate = 3f;        
-    public float muzzleOffset = 0.6f;  
-
-    Rigidbody2D rb;
     Camera cam;
-    Vector2 moveDir;
-    Vector2 aimDir = Vector2.up;       
-    float nextShotTime;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        rb.bodyType = RigidbodyType2D.Kinematic;
-        rb.gravityScale = 0f;
-        cam = Camera.main;
-    }
-    
-    
-    // Update is called once per frame
+    float ttemp = 1;
+
+    void Start() => cam = Camera.main;
+
     void Update()
     {
-        moveDir = Vector2.zero;
-
-    
-        if (IsMouseHeld())
+        if (Mouse.current.leftButton.isPressed)
         {
-            Vector2 target = cam.ScreenToWorldPoint(GetMouseScreenPos());
-            Vector2 toTarget = target - (Vector2)transform.position;
+            Vector2 mouse = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Vector2 dir = mouse - (Vector2)transform.position;
 
-            if (toTarget.magnitude > stopDistance)
+            if (dir.sqrMagnitude > 0.01f)
             {
-                moveDir = toTarget.normalized;
-                aimDir = moveDir;
+                transform.up = dir; // aponta para o mouse (sprite desenhado para cima)
+                transform.position = Vector2.MoveTowards(transform.position, mouse, moveSpeed * Time.deltaTime);
             }
         }
 
-
-        float angle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg - 90f;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
-
-        if (Time.time >= nextShotTime)
+        
+        ttemp -= Time.deltaTime;
+        if (ttemp <= 0f)
         {
-            Shoot();
-            nextShotTime = Time.time + 1f / fireRate;
+            Instantiate(projectilePrefab, transform.position + transform.up * dtplayer, transform.rotation);
+            ttemp = 1f / tsegundo;
         }
-    }
-
-    void FixedUpdate()
-    { 
-        if (moveDir != Vector2.zero)
-        rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
-    }
-
-    void Shoot()
-    {
-        if (projectilePrefab == null) return;
-        Vector3 pos = transform.position + (Vector3)(aimDir * muzzleOffset);
-        Projectile p = Instantiate(projectilePrefab, pos, transform.rotation);
-        p.Init(aimDir);
-    }
-
-    static bool IsMouseHeld()
-    {
-        return Mouse.current != null && Mouse.current.leftButton.isPressed;
-    }
-
-    static Vector3 GetMouseScreenPos()
-    {
-        return Mouse.current != null ? (Vector3)Mouse.current.position.ReadValue() : Vector3.zero;
     }
 }

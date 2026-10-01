@@ -9,15 +9,14 @@ public class PlayerMovements : MonoBehaviour
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        // GetComponent busca todos os componentes, <> especifica qual voce quer
+        rb = GetComponent<Rigidbody2
     }
 
     // Update is called once per frame
     void Update()
     {
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        //Input.GetAxisRaw le o eixo do input, "Horizontal" ja vem configurado
+       
     }
 
     void FixedUpdate()
