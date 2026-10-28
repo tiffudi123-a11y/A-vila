@@ -2,16 +2,20 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public GameTimer gameTimer;
+    private float proximoIntervalo = 300f;
+
+    public GameObject XP;
+	
     public Enemy enemyPrefab;
     public Transform player;
     public int maxEnemies = 15;
-    public int minporvz = 2;
-    public int maxporvz = 4;
+    public int minPorVez = 2;
+    public int maxPorVez = 4;
     public float intervspawn = 2f;
     public float dminspawn = 12f;
     public float maxdspawn = 16f;
 
-    float timer;
 
     void Update()
     {
@@ -28,5 +32,12 @@ public class EnemySpawner : MonoBehaviour
             Enemy e = Instantiate(enemyPrefab, (Vector2)player.position + offset, Quaternion.identity, transform);
             e.GetComponent<EnemyMovement>().target = player;
         }
+
+	if (gameTimer.timer >= proximoIntervalo)
+        {
+            maxPorVz += 20;
+            proximoIntervalo += 300f;
+
+            Debug.Log("Nível dos inimigos: " + nivelInimigo);
     }
 }
