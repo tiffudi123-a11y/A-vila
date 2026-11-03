@@ -15,7 +15,7 @@ public class XP : MonoBehaviour
         if (player == null) return;
 
         player.AdicionarXP(quantidadeXP);
-        Debug.Log("XP coletado! Total: " + player.TotalXP);
+        
         Destroy(gameObject);
     }
 
