@@ -5,6 +5,7 @@ public class XP : MonoBehaviour
     public GameTimer gameTimer;
 
     public int quantidadeXP = 10;
+    private float proximoIntervalo = 300f;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -23,7 +24,7 @@ public class XP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameTimer.timer >= proximoIntervalo)
+        if (gameTimer != null && gameTimer.TempoDecorrido >= proximoIntervalo)
     	{
         	quantidadeXP += 10;
         	

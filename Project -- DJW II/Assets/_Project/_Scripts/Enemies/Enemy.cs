@@ -29,11 +29,11 @@ public class Enemy : MonoBehaviour
     
     void Update()
     {
-   	if (gameTimer.timer >= proximoIntervalo)
+   	if (gameTimer != null && gameTimer.TempoDecorrido >= proximoIntervalo)
         {
             health += 20;
-	    danContato *= 2;
-	    coldownHit += 0.5f;
+	    dancontato *= 2;
+	    ColdownPHit += 0.5f;
             proximoIntervalo += 300f;
 
             Debug.Log("Nível dos inimigos: " + nivelInimigo);

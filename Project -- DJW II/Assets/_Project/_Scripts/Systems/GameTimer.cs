@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class GameTimer : MonoBehaviour
 {
-	float timer = 0;
+	private float timer = 0;
+    public float TempoDecorrido => timer;
 	int ultimoSegundo = -1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
