@@ -7,14 +7,19 @@ public class XP : MonoBehaviour
     public int quantidadeXP = 10;
     private float proximoIntervalo = 300f;
 
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out PlayerXP player))
-        {
-            player.AdicionarXP(quantidadeXP);
-            Destroy(gameObject);
-        }
+        PlayerXP player = other.GetComponentInParent<PlayerXP>();
+
+        if (player == null) return;
+
+        player.AdicionarXP(quantidadeXP);
+        Debug.Log("XP coletado! Total: " + player.TotalXP);
+        Destroy(gameObject);
     }
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

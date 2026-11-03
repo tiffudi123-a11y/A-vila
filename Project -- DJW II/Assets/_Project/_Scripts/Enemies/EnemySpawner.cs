@@ -4,8 +4,9 @@ public class EnemySpawner : MonoBehaviour
 {
     public GameTimer gameTimer;
     private float proximoIntervalo = 300f;
+    private float timer;
 
-    public GameObject XP;
+    //public GameObject XP;
 	
     public Enemy enemyPrefab;
     public Transform player;
@@ -24,20 +25,22 @@ public class EnemySpawner : MonoBehaviour
         timer = intervspawn;
 
         
-        int count = Mathf.Min(Random.Range(minporvz, maxporvz + 1), maxEnemies - transform.childCount);
+        int count = Mathf.Min(Random.Range(minPorVez, maxPorVez + 1), maxEnemies - transform.childCount);
 
         for (int i = 0; i < count; i++)
         {
             Vector2 offset = Random.insideUnitCircle.normalized * Random.Range(dminspawn, maxdspawn);
             Enemy e = Instantiate(enemyPrefab, (Vector2)player.position + offset, Quaternion.identity, transform);
             e.GetComponent<EnemyMovement>().target = player;
+            e.gameTimer = gameTimer;
         }
 
-	if (gameTimer.timer >= proximoIntervalo)
+	if (gameTimer != null && gameTimer.TempoDecorrido >= proximoIntervalo)
         {
-            maxPorVz += 20;
+            maxPorVez += 20;
             proximoIntervalo += 300f;
 
-            Debug.Log("Nível dos inimigos: " + nivelInimigo);
+            Debug.Log("Máximo de inimigos por vez: " + maxPorVez);
+        }
     }
 }

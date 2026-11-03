@@ -38,7 +38,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6964163671004075380
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,6 +95,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!61 &8498982055699484042
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -180,8 +181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce40af860edd234098fd7f8438b7053, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  xpPrefab: {fileID: 6527963016494602187, guid: 2ceafe25565fff54689770464ad9f406, type: 3}
+  gameTimer: {fileID: 0}
   health: 100
-  dancontato: 10
+  danContato: 10
   ColdownPHit: 0.5
 --- !u!114 &8281798721299981445
 MonoBehaviour:
