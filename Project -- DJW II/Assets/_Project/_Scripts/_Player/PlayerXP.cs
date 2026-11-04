@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerXP : MonoBehaviour
 {
+    [SerializeField] private MenuBau menuBau;
+
     public int XPAtual { get; private set; }
     public int nivel {get; private set;} = 1;
 
@@ -15,6 +17,9 @@ public class PlayerXP : MonoBehaviour
         {
             XPAtual -= 300;
             nivel++;
+
+            if (menuBau != null)
+            menuBau.Abrir();
 
             Debug.Log("Subiu para o nivel " + nivel);
         }
